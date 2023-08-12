@@ -22,7 +22,6 @@
     "drizzle-kit": "^0.19.12",
     "nuxt": "^3.4.1",
     "nuxt-icon": "^0.3.3",
-    "prisma": "^4.13.0",
     "vitest": "^0.30.1"
   },
   "type": "module",
@@ -30,7 +29,6 @@
     "@headlessui/vue": "^1.7.12",
     "@libsql/client": "^0.3.1",
     "@pinia/nuxt": "^0.4.7",
-    "@prisma/client": "4.13.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
