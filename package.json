@@ -1,14 +1,13 @@
 {
   "private": true,
   "scripts": {
-    "build": "nuxt build",
+    "build": "drizzle-kit push:sqlite && nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "push": "drizzle-kit push:sqlite",
-    "studio": "drizzle-kit studio",
-    "migrate": "drizzle-kit generate:sqlite"
+    "studio": "drizzle-kit studio"
   },
   "devDependencies": {
     "@nuxt/devtools": "^0.7.4",
