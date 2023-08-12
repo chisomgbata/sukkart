@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "PaymentType" AS ENUM ('CASH_ON_DELIVERY', 'ONLINE');
+
+-- AlterTable
+ALTER TABLE "Order" ADD COLUMN     "type" TEXT NOT NULL DEFAULT 'ONLINE';
