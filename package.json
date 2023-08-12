@@ -1,13 +1,14 @@
 {
   "private": true,
   "scripts": {
-    "build": "drizzle-kit push:sqlite && nuxt build",
+    "build": "node ./drizzle/migrate.js && nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "push": "drizzle-kit push:sqlite",
-    "studio": "drizzle-kit studio"
+    "studio": "drizzle-kit studio",
+    "migrate": "drizzle-kit generate:sqlite",
+    "apply": "node ./drizzle/migrate.js"
   },
   "devDependencies": {
     "@nuxt/devtools": "^0.7.4",
@@ -24,6 +25,7 @@
     "prisma": "^4.13.0",
     "vitest": "^0.30.1"
   },
+  "type": "module",
   "dependencies": {
     "@headlessui/vue": "^1.7.12",
     "@libsql/client": "^0.3.1",
