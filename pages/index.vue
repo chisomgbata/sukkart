@@ -20,7 +20,17 @@ const { data, pending, refresh } = useLazyFetch("/api/home");
         <div>error</div>
         <button @click="refresh()">retry</button>
       </div>
-      <div v-else class="flex flex-col gap-10">
+
+      <div>
+        <div class="aspect-[2/1] bg-gray-700 w-full rounded-sm overflow-clip">
+          <NuxtPicture
+            src="/promos/sale.jpg"
+            :imgAttrs="{ class: 'w-full h-full object-cover' }"
+          ></NuxtPicture>
+        </div>
+      </div>
+
+      <div v-if="data" class="flex flex-col gap-10">
         <Products
           :products="data"
           title="Recommended Products"

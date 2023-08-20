@@ -26,6 +26,7 @@ useHead({
       rel: "manifest",
       href: "/site.webmanifest",
     },
+    // add default language
   ],
 });
 const isDev = process.env.NODE_ENV === "development";
@@ -35,10 +36,8 @@ const isDev = process.env.NODE_ENV === "development";
   <div class="bg-white font-sans">
     <Navbar />
 
-    <div>
-      <div>
-        <slot />
-      </div>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 w-full px-2">
+      <slot />
     </div>
 
     <Search />

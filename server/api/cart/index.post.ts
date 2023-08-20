@@ -1,7 +1,24 @@
 import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
-  const user = await useUser(event);
+  const user = await useUser(event).catch(() => {
+    const guestCookie = getCookie(event, "guest_id");
+    if (!guestCookie) {
+      const guestId = generateId();
+      setCookie(event, "guest_id", guestId, {
+        sameSite: true,
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 365 * 1, // 10 years
+        secure: process.env.NODE_ENV === "production",
+      });
+      return {
+        id: guestId,
+      };
+    }
+    return {
+      id: guestCookie,
+    };
+  });
   const body = await readBody(event);
 
   const validateRequest = z
@@ -25,7 +42,6 @@ export default defineEventHandler(async (event) => {
       productId: validateRequest.data.productId,
       quantity: 1,
     })
-    .onConflictDoNothing()
     .run()
     .catch((e) => {
       if (e.code == "FOREIGN_KEY_CONSTRAINT") {

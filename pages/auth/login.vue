@@ -13,7 +13,7 @@ const loginUser = async () => {
   try {
     loading.value = true;
     const validatedData = loginUserCheck.parse(formData);
-    const user = await $fetch("/api/auth/login", {
+    const { user, cart } = await $fetch("/api/auth/login", {
       method: "POST",
       body: validatedData,
     });
@@ -22,6 +22,7 @@ const loginUser = async () => {
     });
     useTrackEvent("login");
     useUserStore().setUser(user);
+    useCartStore().setCart(cart);
     const redirectCookie = useCookie("redirect");
     if (redirectCookie.value) {
       await navigateTo(redirectCookie.value);
@@ -142,9 +143,7 @@ const loading = ref(false);
               <div class="w-full border-t border-gray-300"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-gray-500">
-                Or continue with
-              </span>
+              <span class="px-2 bg-white text-gray-500">Or continue with</span>
             </div>
           </div>
 

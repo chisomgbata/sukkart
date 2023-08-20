@@ -177,7 +177,7 @@ const open = ref(false);
             </button>
 
             <!-- Logo -->
-            <NuxtLink @click="open = false" to="/">
+            <NuxtLink @click="open = false" to="/" class="ml-3">
               <UiLogo />
             </NuxtLink>
             <div class="md:ml-auto flex items-center">

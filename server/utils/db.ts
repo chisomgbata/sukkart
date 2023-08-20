@@ -9,7 +9,9 @@ const client = createClient({
   authToken: runtimeConfig.dbToken,
 });
 
-export const db = drizzle(client);
+export const db = drizzle(client, {
+  logger: process.env.NODE_ENV === "development",
+});
 
 export const seeder = drizzle(client);
 

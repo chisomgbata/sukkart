@@ -1,27 +1,16 @@
 export default defineEventHandler(async (event) => {
-  const user = await useUser(event);
-  const cart = await db
-    .select({
-      quantity: cartItemTable.quantity,
-      product: {
-        id: productTable.id,
-        name: productTable.name,
-        sellingPrice: productTable.sellingPrice,
-        costPrice: productTable.costPrice,
-        slug: productTable.slug,
-        image: productTable.image,
-        stock: productTable.stock,
-      },
-    })
-    .from(cartItemTable)
-    .where(eq(cartItemTable.userId, user.id))
-    .innerJoin(productTable, eq(cartItemTable.productId, productTable.id))
-    .all();
-
-  return cart.map(({ product, quantity }) => {
+  const user = await useUser(event).catch(() => {
+    // since there is no user, check for a guest cookie and if there is no guest cookie, create one and return an empty cart
+    const guestCookie = getCookie(event, "guest_id");
+    if (!guestCookie) {
+      // return null since there is no user and no guest cookie and we can't create a guest cookie because the user is not adding to cart
+      return null;
+    }
     return {
-      quantity: quantity,
-      ...minimalProductTransform(product),
+      id: guestCookie,
     };
   });
+
+  if (!user) return [];
+  return await getCart(user.id);
 });

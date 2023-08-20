@@ -45,5 +45,11 @@ export default defineEventHandler(async (event) => {
 
   const loggedInUser = await loginUser(user, event);
 
-  return loggedInUser;
+  // fetch the cart so that the frontend don't have to make another request
+  const cartItems = await getCart(loggedInUser.id);
+
+  return {
+    user: loggedInUser,
+    cart: cartItems,
+  };
 });

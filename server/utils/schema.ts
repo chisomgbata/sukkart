@@ -261,9 +261,7 @@ export const cartItemTable = sqliteTable(
     productId: int("productId")
       .references(() => productTable.id)
       .notNull(),
-    userId: text("userId")
-      .references(() => userTable.id)
-      .notNull(),
+    userId: text("userId").notNull(),
     createdAt: integer("createdAt", {
       mode: "timestamp",
     }).default(sql`CURRENT_TIMESTAMP`),
@@ -360,3 +358,12 @@ export type CouponConditionInsert = InferModel<
   typeof couponConditionTable,
   "insert"
 >;
+
+export const promotionSlideTable = sqliteTable("promotionSlide", {
+  id: integer("id").primaryKey({
+    autoIncrement: true,
+  }),
+  image: text("image").notNull(),
+  title: text("title").notNull(),
+  link: text("link").notNull().unique(),
+});

@@ -29,6 +29,11 @@ export const useCartStore = defineStore("CartStore", () => {
     initialLoading.value = false;
   };
 
+  const setCart = (newCart: Cart[]) => {
+    cart.value = newCart;
+  };
+
+
   const addToCart = async (product: Product) => {
     loading.value = true;
     if (isInCart(product.id)) {
@@ -87,8 +92,7 @@ export const useCartStore = defineStore("CartStore", () => {
           sellingPrice: e.price,
           quantity: e.quantity,
         };
-      }),
-      coupon?.value
+      })
     );
   });
 
@@ -123,6 +127,7 @@ export const useCartStore = defineStore("CartStore", () => {
     setCoupon,
     getCoupon,
     clearCoupon,
+    setCart,
   };
 });
 

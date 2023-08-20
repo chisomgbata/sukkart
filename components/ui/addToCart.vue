@@ -15,46 +15,27 @@ const props = defineProps<{
   productName: string;
   slug: string;
 }>();
-const useStore = useUserStore();
-const user = computed(() => useStore.user);
+
 const add = async () => {
-  if (!user.value) {
-    useTrackEvent("Wants To Add To Cart", {
+  try {
+    useTrackEvent("Add To Cart", {
       props: {
         product: props.productName,
         id: props.product.id,
       },
     });
-
-    toast.error("Login Required", {
-      description: "You need to login to add to cart",
-    });
-    const cookie = useCookie("redirect");
-    cookie.value = "/product/" + props.slug;
-    setTimeout(async () => {
-      await navigateTo("/auth/login");
-    }, 1000);
-  } else {
-    try {
-      useTrackEvent("Add To Cart", {
-        props: {
-          product: props.productName,
-          id: props.product.id,
-        },
-      });
-      const addedtocart = await addToCart(props.product);
-      if (addedtocart) {
-        toast.success("Added To Cart", {
-          description: `${props.productName} has being added to your cart`,
-        });
-        return;
-      }
-    } catch (error: any) {
-      toast.error("Error", {
-        description: error.data.message,
+    const addedtocart = await addToCart(props.product);
+    if (addedtocart) {
+      toast.success("Added To Cart", {
+        description: `${props.productName} has being added to your cart`,
       });
       return;
     }
+  } catch (error: any) {
+    toast.error("Error", {
+      description: error.data.message,
+    });
+    return;
   }
 };
 </script>

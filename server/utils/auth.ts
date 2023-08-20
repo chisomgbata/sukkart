@@ -31,5 +31,49 @@ export const loginUser = async (user: User, event: H3Event) => {
     maxAge: 60 * 60 * 24 * 7 * 4, // 4 weeks
     expires: new Date(Date.now() + 60 * 60 * 24 * 7 * 4),
   });
+
+  // check for guestid id, if it exists migrate the cart to the user and delete the guest id cookie and the guest cart
+  const guestId = getCookie(event, "guest_id");
+  if (guestId) {
+    const cartItems = await db
+      .select({
+        productId: cartItemTable.productId,
+        quantity: cartItemTable.quantity,
+      })
+      .from(cartItemTable)
+      .where(eq(cartItemTable.userId, guestId))
+      .all();
+
+    setCookie(event, "guest_id", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 0,
+      expires: new Date(Date.now() - 1000),
+    });
+
+    if (cartItems.length === 0) return verifyToken(token);
+
+    // delete the user cart items, so that we can insert the newly created ones, because they might have different quantities and the user might not want to  keep some of the old items and avoid mistakenly checking out with them
+
+    await db.transaction(async (tx) => {
+      await tx
+        .delete(cartItemTable)
+        .where(eq(cartItemTable.userId, user.id))
+        .run();
+
+      await tx
+        .delete(cartItemTable)
+        .where(eq(cartItemTable.userId, guestId))
+        .run();
+
+      await tx
+        .insert(cartItemTable)
+        .values(cartItems.map((item) => ({ ...item, userId: user.id })))
+        .onConflictDoNothing()
+        .run();
+    });
+  }
+
   return verifyToken(token);
 };

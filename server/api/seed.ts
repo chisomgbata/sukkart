@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
       costPrice: Math.floor(Math.random() * 1000),
       price: Math.floor(Math.random() * 1000),
       description: `Description ${i}`,
-      image: `https://picsum.photos/seed/${i}/200/300`,
+      image: `/products/44ec78ec-84fb-422e-a264-76d37bcb38e0.jpg`,
       slug: `product-${i}`,
     })
   );

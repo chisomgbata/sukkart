@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "162844da-3fd8-4d46-b8d9-c6f7008741d5",
+  "id": "acbea46e-2673-4319-8749-3cc659ba2e0e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "address": {
@@ -127,19 +127,6 @@
           "tableTo": "product",
           "columnsFrom": [
             "productId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "cartItem_userId_user_id_fk": {
-          "name": "cartItem_userId_user_id_fk",
-          "tableFrom": "cartItem",
-          "tableTo": "user",
-          "columnsFrom": [
-            "userId"
           ],
           "columnsTo": [
             "id"
@@ -986,6 +973,51 @@
           "name": "product_slug_unique",
           "columns": [
             "slug"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "promotionSlide": {
+      "name": "promotionSlide",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "link": {
+          "name": "link",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "promotionSlide_link_unique": {
+          "name": "promotionSlide_link_unique",
+          "columns": [
+            "link"
           ],
           "isUnique": true
         }

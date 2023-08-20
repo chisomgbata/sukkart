@@ -14,8 +14,7 @@ CREATE TABLE `cartItem` (
 	`userId` text NOT NULL,
 	`createdAt` integer DEFAULT CURRENT_TIMESTAMP,
 	`updatedAt` integer DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (`productId`) REFERENCES `product`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`productId`) REFERENCES `product`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `category` (
@@ -136,6 +135,13 @@ CREATE TABLE `product` (
 	`updatedAt` integer DEFAULT CURRENT_TIMESTAMP
 );
 --> statement-breakpoint
+CREATE TABLE `promotionSlide` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`image` text NOT NULL,
+	`title` text NOT NULL,
+	`link` text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `user` (
 	`id` text PRIMARY KEY NOT NULL,
 	`firstName` text NOT NULL,
@@ -157,4 +163,5 @@ CREATE UNIQUE INDEX `order_reference_unique` ON `order` (`reference`);--> statem
 CREATE UNIQUE INDEX `productCategory_productId_categoryId_unique` ON `productCategory` (`productId`,`categoryId`);--> statement-breakpoint
 CREATE UNIQUE INDEX `productImages_productId_image_unique` ON `productImages` (`productId`,`image`);--> statement-breakpoint
 CREATE UNIQUE INDEX `product_slug_unique` ON `product` (`slug`);--> statement-breakpoint
+CREATE UNIQUE INDEX `promotionSlide_link_unique` ON `promotionSlide` (`link`);--> statement-breakpoint
 CREATE UNIQUE INDEX `user_email_unique` ON `user` (`email`);

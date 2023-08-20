@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     "@nuxtjs/plausible",
     "@nuxtjs/tailwindcss",
     "@nuxt/devtools",
-    "@nuxt/image-edge",
+    "@nuxt/image",
   ],
   imports: {
     dirs: ["./stores", "./zod", "composables/*/index.ts"],
@@ -39,5 +39,11 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ["vue-sonner"],
+  },
+  image: {
+    provider: "imagekit",
+    imagekit: {
+      baseURL: "https://ik.imagekit.io/j4oeb7okg",
+    },
   },
 });
