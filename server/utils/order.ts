@@ -22,7 +22,7 @@ export const convertToOrderItems = (
   }[]
 ) => {
   return cartItems.map((item) => ({
-    sellingPrice: item.sellingPrice || calcPrice(item.costPrice),
+    price: item.sellingPrice || calcPrice(item.costPrice),
     productId: item.id,
     quantity: item.quantity,
   }));
@@ -36,18 +36,4 @@ export function generateRandomCode(length: number) {
     code += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return code;
-}
-
-export function useOrderItemsToCreate(
-  orderItems: {
-    sellingPrice: number;
-    productId: number;
-    quantity: number;
-  }[]
-) {
-  return orderItems.map((item) => ({
-    price: item.sellingPrice,
-    productId: item.productId,
-    quantity: item.quantity,
-  }));
 }

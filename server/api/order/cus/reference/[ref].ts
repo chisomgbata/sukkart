@@ -10,17 +10,13 @@ export default defineEventHandler(async (event) => {
       message: "error",
     });
   }
-  console.log(ref);
 
-  const order = await usePrisma.order.findFirst({
-    where: {
-      reference: ref,
-      userId: user.id,
-    },
-    include: {
-      Address: true,
-    },
-  });
+  const [order] = await db
+    .select()
+    .from(orderTable)
+    .where(and(eq(orderTable.reference, ref), eq(orderTable.userId, user.id)))
+    .leftJoin(addressTable, eq(orderTable.addressId, addressTable.id))
+    .all();
 
   return order;
 });

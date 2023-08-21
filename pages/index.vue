@@ -10,6 +10,8 @@ useHead({
   ],
 });
 
+useHandleRedirect();
+
 const { data, pending, refresh } = useLazyFetch("/api/home");
 </script>
 <template>
@@ -24,7 +26,7 @@ const { data, pending, refresh } = useLazyFetch("/api/home");
       <div>
         <div class="aspect-[2/1] bg-gray-700 w-full rounded-sm overflow-clip">
           <NuxtPicture
-            src="/promos/sale.jpg"
+            src="/promos/food.jpeg"
             :imgAttrs="{ class: 'w-full h-full object-cover' }"
           ></NuxtPicture>
         </div>

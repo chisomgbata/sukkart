@@ -23,13 +23,8 @@ const loginUser = async () => {
     useTrackEvent("login");
     useUserStore().setUser(user);
     useCartStore().setCart(cart);
-    const redirectCookie = useCookie("redirect");
-    if (redirectCookie.value) {
-      await navigateTo(redirectCookie.value);
-      redirectCookie.value = "";
-    } else {
-      await navigateTo("/");
-    }
+
+    await navigateTo("/");
   } catch (error: any) {
     loading.value = false;
     if (error.errors) {

@@ -28,13 +28,7 @@ const registerUser = async () => {
     useTrackEvent("register");
     setUser(user);
     useCartStore().fetchAndSetCart();
-    const redirectCookie = useCookie("redirect");
-    if (redirectCookie.value) {
-      await navigateTo(redirectCookie.value);
-      redirectCookie.value = "";
-    } else {
-      await navigateTo("/");
-    }
+    await navigateTo("/");
   } catch (error: any) {
     loading.value = false;
     if (error.data?.errors[0].extensions.code == "RECORD_NOT_UNIQUE") {
@@ -170,9 +164,7 @@ const loading = ref(false);
               <div class="w-full border-t border-gray-300"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-gray-500">
-                Or continue with
-              </span>
+              <span class="px-2 bg-white text-gray-500">Or continue with</span>
             </div>
           </div>
 

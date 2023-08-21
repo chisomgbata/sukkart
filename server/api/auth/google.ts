@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
+  const body = getQuery(event);
   const code = body.code?.toString();
   const baseUrl = useRuntimeConfig().public.baseUrl;
 
@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
       message: "Invalid code",
     });
   }
-  console.log(code);
   const response = await $fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     query: {
@@ -19,7 +18,7 @@ export default defineEventHandler(async (event) => {
         "629319720255-tmknbjp73la50vq1fckg3evd3t0sc0s4.apps.googleusercontent.com",
       grant_type: "authorization_code",
       client_secret: "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",
-      redirect_uri: `${baseUrl}/auth/login`,
+      redirect_uri: `${baseUrl}/api/auth/google`,
     },
   });
 
@@ -55,6 +54,6 @@ export default defineEventHandler(async (event) => {
     .returning()
     .all();
 
-  const loggedInUser = await loginUser(createOrUpdateUser, event);
-  return loggedInUser;
+  await loginUser(createOrUpdateUser, event);
+  return sendRedirect(event, "/");
 });

@@ -1,53 +1,46 @@
-import { useOrderPrice } from "~/composables/order";
+import type { OrderInsert } from "~/server/utils/schema";
 export default defineEventHandler(async (event) => {
+  const runtimeConfig = useRuntimeConfig();
+
   const user = await useUser(event);
   const body = await readBody(event);
-  const { addressId, couponId } = body;
-  if (!addressId || typeof addressId !== "string") {
+
+  const validateBody = z
+    .object({
+      addressId: z.number(),
+    })
+    .safeParse(body);
+
+  if (!validateBody.success) {
     throw createError({
+      message: "Invalid body",
       statusCode: 400,
-      message: "addressId is required",
+      data: validateBody.error.flatten().fieldErrors,
     });
   }
+
+  const { addressId } = validateBody.data;
+
   // get cart items
   const cartItems = await useGetCartItems(user.id);
 
-  if (couponId && typeof couponId !== "string") {
-    throw createError({
-      statusCode: 400,
-      message: "couponId is required",
-    });
-  }
-
-  const coupon = await usePrisma.coupon.findUniqueOrThrow({
-    where: {
-      id: couponId,
-    },
-    include: {
-      openTo: true,
-      CouponCondition: true,
-    },
-  });
-
   // convert to order items
   const orderItems = convertToOrderItems(cartItems);
-  const totalWithoutCoupon = useOrderPrice(orderItems).totalOrder;
-  const validCoupon = await validateCoupon(coupon, user, totalWithoutCoupon);
-  const { totalOrder, totalDelivery, discount } = useOrderPrice(
-    orderItems,
-    validCoupon
-  );
+  // const totalWithoutCoupon = useOrderPrice(orderItems).totalOrder;
+  // const validCoupon = await validateCoupon(coupon, user, totalWithoutCoupon);
+  const total = orderItems.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
 
-  if (discount > 0) {
-    await usePrisma.couponUsage.create({
-      data: {
-        couponId: coupon.id,
-        userId: user.id,
-      },
-    });
-  }
+  // if (discount > 0) {
+  //   await usePrisma.couponUsage.create({
+  //     data: {
+  //       couponId: coupon.id,
+  //       userId: user.id,
+  //     },
+  //   });
+  // }
 
-  
   interface paystackResponse {
     status: boolean;
     message: string;
@@ -63,40 +56,30 @@ export default defineEventHandler(async (event) => {
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer sk_live_8fea11d7337a3a9bd794ab4d4ed71534c6f88c4f`,
+        Authorization: `Bearer ${runtimeConfig.paystackSecret}`,
       },
       body: {
         email: user.email,
-        amount: totalOrder * 100,
+        amount: total * 100,
       },
     }
   );
 
-  // order items to create stage
+  const orderToCreate: OrderInsert = {
+    userId: user.id,
+    total: total,
+    reference: paystack.data.reference,
+    id: generateId(),
+    verificationCode: generateRandomCode(6),
+    paymentUrl: paystack.data.authorization_url,
+    addressId,
+  };
 
-  const orderItemsToCreate = useOrderItemsToCreate(orderItems);
-  // create order
-  const createOrderPromise = usePrisma.order.create({
-    data: {
-      userId: user.id,
-      total: totalOrder,
-      deliveryCost: totalDelivery,
-      reference: paystack.data.reference,
-      verificationCode: generateRandomCode(6),
-      paymentUrl: paystack.data.authorization_url,
-      items: {
-        create: orderItemsToCreate,
-      },
-      addressId,
-    },
-  });
+  const createOrderPromise = db.insert(orderTable).values(orderToCreate);
 
-  // delete cart items
-  const deleteCartItemsPromise = usePrisma.cartItem.deleteMany({
-    where: {
-      userId: user.id,
-    },
-  });
+  const deleteCartItemsPromise = db
+    .delete(cartItemTable)
+    .where(eq(cartItemTable.userId, user.id));
 
   await Promise.all([createOrderPromise, deleteCartItemsPromise]);
 

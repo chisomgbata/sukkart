@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     jwtSecret: "",
     dbUrl: "",
     dbToken: "",
+    paystackSecret: "",
   },
   plausible: {
     domain: "sukkart.com",

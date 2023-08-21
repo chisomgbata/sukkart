@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
   // convert to order items
   const orderItems = convertToOrderItems(cartItems);
   const total = orderItems.reduce((acc, item) => {
-    return acc + item.sellingPrice * item.quantity;
+    return acc + item.price * item.quantity;
   }, 0);
   // const validCoupon = await validateCoupon(coupon, user, totalWithoutCoupon);
   // const { totalOrder, discount } = useOrderPrice(
@@ -42,7 +42,6 @@ export default defineEventHandler(async (event) => {
 
   const reference = generateRandomCode(10);
   const verificationCode = generateRandomCode(6);
-  const orderItemsToCreate = useOrderItemsToCreate(orderItems);
 
   const order = await db.transaction(async (tx) => {
     const [createOrder] = await tx
@@ -59,7 +58,7 @@ export default defineEventHandler(async (event) => {
       .returning({ id: orderTable.id })
       .all();
 
-    const finalItems = orderItemsToCreate.map((item) => ({
+    const finalItems = orderItems.map((item) => ({
       ...item,
       orderId: createOrder.id,
     }));

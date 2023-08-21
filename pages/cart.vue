@@ -68,19 +68,11 @@ let checkingout = ref(false);
 
 const couponCode = ref("");
 
-// const useCoupon = async () => {
-//   try {
-//     const validCode = z.string().min(4).parse(couponCode.value);
-//     // const couponGet = await $fetch("/api/coupon", {
-//     //   method: "PUT",
-//     //   body: { code: validCode, total: totalOrder },
-//     // });
-//     // setCoupon("");
-//     showToast("success", "Coupon applied successfully");
-//   } catch (error) {
-//     useHandleError(error);
-//   }
-// };
+const loginToProceed = () => {
+  const redirectCookie = useCookie("redirect");
+  redirectCookie.value = "/cart";
+  navigateTo("/auth/login");
+};
 </script>
 
 <template>
@@ -205,12 +197,12 @@ const couponCode = ref("");
                 </UiButton>
               </div>
               <div v-else>
-                <NuxtLink
-                  to="/auth/login"
+                <button
+                  @click="loginToProceed()"
                   class="mt-8 w-full bg-orange-600 border border-transparent rounded-tr-lg rounded-bl-lg py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-900"
                 >
                   Login To Proceed
-                </NuxtLink>
+                </button>
               </div>
             </div>
           </section>
