@@ -10,6 +10,40 @@ useHead({
   ],
 });
 
+const promos = [
+  {
+    src: "/promos/food.jpeg",
+    alt: "food",
+    title: "Food",
+    description: "Get the best food in nsukka",
+    href: "/products/food",
+  },
+  {
+    src: "/promos/food.jpeg",
+    alt: "food",
+    title: "Food",
+    description: "Get the best food in nsukka",
+    href: "/products/food",
+  },
+  {
+    src: "/promos/food.jpeg",
+    alt: "food",
+    title: "Food",
+    description: "Get the best food in nsukka",
+    href: "/products/food",
+  },
+];
+
+const categories = [
+  {
+    name: "Food",
+    href: "/products/food",
+    icon: "fa6-solid:bowl-food",
+    color: "bg-red-500",
+    description: "Get the best food in nsukka",
+  },
+];
+
 useHandleRedirect();
 
 const { data, pending, refresh } = useLazyFetch("/api/home");
@@ -23,12 +57,51 @@ const { data, pending, refresh } = useLazyFetch("/api/home");
         <button @click="refresh()">retry</button>
       </div>
 
+      <div class="flex mt-4 gap-3">
+        <div class="w-1/5 hidden lg:flex flex-col p-2 rounded-lg bg-orange-50">
+          <nav>
+            <ul>
+              <li v-for="category in categories">
+                <NuxtLink :to="category.href" class="flex gap-2">
+                  <Icon :name="category.icon" class="w-5 h-5" />
+                  <span>{{ category.name }}</span>
+                </NuxtLink>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="flex overflow-auto gap-3 snap-x snap-mandatory lg:w-3/5">
+          <div
+            v-for="promo in promos"
+            class="aspect-[2/1] w-[85%] lg:w-full rounded-lg overflow-clip shrink-0 snap-center"
+          >
+            <NuxtLink :to="promo.href">
+              <NuxtPicture
+                :src="promo.src"
+                :imgAttrs="{ class: 'w-full h-full object-cover' }"
+              ></NuxtPicture>
+            </NuxtLink>
+          </div>
+        </div>
+        <div class="hidden lg:flex flex-col flex-1 gap-4">
+          <div class="w-full h-full bg-orange-600 rounded-xl">h</div>
+          <div class="w-full h-full bg-orange-600 rounded-xl">h</div>
+        </div>
+      </div>
+
       <div>
-        <div class="aspect-[2/1] bg-gray-700 w-full rounded-sm overflow-clip">
-          <NuxtPicture
-            src="/promos/food.jpeg"
-            :imgAttrs="{ class: 'w-full h-full object-cover' }"
-          ></NuxtPicture>
+        <div class="flex justify-between items-center">
+          <h2 class="text-xl font-semibold">Categories</h2>
+          <NuxtLink to="/categories">See all</NuxtLink>
+        </div>
+        <div class="flex gap-3 overflow-auto snap-x snap-mandatory">
+          <div
+            v-for="category in categories"
+            class="flex flex-col items-center justify-center w-40 h-40 rounded-lg bg-orange-50 snap-center"
+          >
+            <Icon :name="category.icon" class="w-10 h-10" />
+            <span class="text-sm font-semibold">{{ category.name }}</span>
+          </div>
         </div>
       </div>
 
@@ -42,3 +115,10 @@ const { data, pending, refresh } = useLazyFetch("/api/home");
     </div>
   </div>
 </template>
+
+<style>
+/* hide scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+</style>

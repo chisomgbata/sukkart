@@ -15,7 +15,7 @@ const props = defineProps<{
     <div
       class="rounded-lg overflow-hidden bg-gray-200 aspect-w-1 aspect-h-1 group-hover:opacity-75"
     >
-      <NuxtImg :src="product.image" width="200" height="200" format="webp" />
+      <NuxtImg :src="product.image" width="300" height="300" />
     </div>
     <div class="pt-4 pb-4 text-center">
       <h3 class="text-sm font-medium text-gray-900">

@@ -31,8 +31,8 @@ defineProps<{
               :src="product.image"
               :alt="product.name"
               class="w-full h-full object-center object-cover group-hover:opacity-75"
-              width="200"
-              height="200"
+              width="300"
+              height="300"
               format="webp"
             />
           </div>

@@ -44,8 +44,8 @@ const debounceInput = (value: string) => {
       <NuxtImg
         :src="product.image"
         :alt="product.name"
-        :weight="96"
-        :height="96"
+        :weight="300"
+        :height="300"
         class="w-24 h-24 rounded-md object-center object-cover sm:w-48 sm:h-48"
       />
     </div>
