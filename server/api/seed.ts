@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
       costPrice: Math.floor(Math.random() * 1000),
       price: Math.floor(Math.random() * 1000),
       description: `Description ${i}`,
-      image: `/products/44ec78ec-84fb-422e-a264-76d37bcb38e0.jpg`,
+      image: `/products/placeholder.jpg`,
       slug: `product-${i}`,
     })
   );
@@ -52,7 +52,7 @@ export default defineEventHandler(async (event) => {
     length: 5,
   }).map((_, i) => ({
     productId: 1,
-    image: `https://picsum.photos/seed/${i}/200/300`,
+    image: `/products/placeholder.jpg`,
   }));
 
   const productCategoryToInsert: ProductCategoryInsert[] = Array.from({

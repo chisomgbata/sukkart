@@ -42,6 +42,55 @@ const categories = [
     color: "bg-red-500",
     description: "Get the best food in nsukka",
   },
+  {
+    name: "Drinks",
+    href: "/products/drinks",
+    icon: "fa6-solid:whiskey-glass",
+    color: "bg-blue-500",
+    description: "Get the best food in nsukka",
+  },
+  {
+    name: "Electronics",
+    href: "/products/electronics",
+    icon: "fa6-solid:tv",
+    color: "bg-green-500",
+    description: "Get the best food in nsukka",
+  },
+  {
+    name: "Fashion",
+    href: "/products/fashion",
+    icon: "fa6-solid:shirt",
+    color: "bg-yellow-500",
+    description: "Get the best food in nsukka",
+  },
+  {
+    name: "Furniture",
+    href: "/products/furniture",
+    icon: "fa6-solid:chair",
+    color: "bg-purple-500",
+    description: "Get the best food in nsukka",
+  },
+  {
+    name: "Health",
+    href: "/products/health",
+    icon: "fa6-solid:heart",
+    color: "bg-pink-500",
+    description: "Get the best food in nsukka",
+  },
+  {
+    name: "Sports",
+    href: "/products/sports",
+    icon: "fa6-solid:volleyball",
+    color: "bg-indigo-500",
+    description: "Get the best food in nsukka",
+  },
+  {
+    name: "Toys",
+    href: "/products/toys",
+    icon: "fa6-solid:gamepad",
+    color: "bg-gray-500",
+    description: "Get the best food in nsukka",
+  },
 ];
 
 useHandleRedirect();
@@ -58,9 +107,9 @@ const { data, pending, refresh } = useLazyFetch("/api/home");
       </div>
 
       <div class="flex mt-4 gap-3">
-        <div class="w-1/5 hidden lg:flex flex-col p-2 rounded-lg bg-orange-50">
+        <div class="w-1/5 hidden lg:flex flex-col  rounded-lg bg-orange-50 text-orange-600 gap-3 p-4">
           <nav>
-            <ul>
+            <ul class="flex flex-col gap-4">
               <li v-for="category in categories">
                 <NuxtLink :to="category.href" class="flex gap-2">
                   <Icon :name="category.icon" class="w-5 h-5" />
@@ -84,12 +133,20 @@ const { data, pending, refresh } = useLazyFetch("/api/home");
           </div>
         </div>
         <div class="hidden lg:flex flex-col flex-1 gap-4">
-          <div class="w-full h-full bg-orange-600 rounded-xl">h</div>
-          <div class="w-full h-full bg-orange-600 rounded-xl">h</div>
+          <div
+            class="w-full h-full bg-orange-600 rounded-xl grid place-items-center text-orange-50"
+          >
+            Promo Section
+          </div>
+          <div
+            class="w-full h-full bg-orange-600 rounded-xl grid place-items-center text-orange-50"
+          >
+            Promo Section
+          </div>
         </div>
       </div>
 
-      <div>
+      <!-- <div>
         <div class="flex justify-between items-center">
           <h2 class="text-xl font-semibold">Categories</h2>
           <NuxtLink to="/categories">See all</NuxtLink>
@@ -103,9 +160,9 @@ const { data, pending, refresh } = useLazyFetch("/api/home");
             <span class="text-sm font-semibold">{{ category.name }}</span>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div v-if="data" class="flex flex-col gap-10">
+      <div v-if="data" class="flex flex-col gap-10 mt-8">
         <Products
           :products="data"
           title="Recommended Products"
