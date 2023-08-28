@@ -27,7 +27,6 @@ const checkout = async () => {
       useCartStore().clearCart();
       useCartStore().clearCoupon();
       couponCode.value = "";
-
       return await navigateTo(order, { external: true });
     } else {
       toast.error("error", {

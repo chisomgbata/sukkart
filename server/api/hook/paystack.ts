@@ -1,7 +1,7 @@
 import { createHmac } from "crypto";
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const secretKey = "sk_live_8fea11d7337a3a9bd794ab4d4ed71534c6f88c4f";
+  const secretKey = useRuntimeConfig().paystackSecret;
   const hash = createHmac("sha512", secretKey)
     .update(JSON.stringify(body))
     .digest("hex");
